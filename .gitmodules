@@ -1,0 +1,3 @@
+[submodule "src/VHDLFormatter"]
+	path = src/VHDLFormatter
+	url = https://github.com/g2384/VHDLFormatter

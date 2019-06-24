@@ -1,0 +1,171 @@
+{
+	"name": "net.vinrobot.vhdl.formatter",
+	"displayName": "VHDL Formatter",
+	"description": "",
+	"version": "0.0.1",
+	"publisher": "Vinrobot",
+	"engines": {
+		"vscode": "^1.6.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onLanguage:vhdl"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"languages": [
+			{
+				"id": "vhdl",
+				"aliases": [
+					"VHDL",
+					"vhdl",
+					"vhdl-lang"
+				],
+				"extensions": [
+					"vhdl",
+					"vhd",
+					"vho",
+					"vht"
+				]
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "VHDL Formatter configuration",
+			"properties": {
+				"vhdl.formatter.replaceByAliases": {
+					"type": "boolean",
+					"default": false,
+					"description": ""
+				},
+				"vhdl.formatter.useTabs": {
+					"type": "boolean",
+					"default": true,
+					"description": ""
+				},
+				"vhdl.formatter.customIndentation": {
+					"type": [
+						"string",
+						"null"
+					],
+					"default": null,
+					"description": ""
+				},
+				"vhdl.formatter.align.all": {
+					"type": "boolean",
+					"default": true,
+					"description": ""
+				},
+				"vhdl.formatter.align.port": {
+					"type": "boolean",
+					"default": false,
+					"description": ""
+				},
+				"vhdl.formatter.align.function": {
+					"type": "boolean",
+					"default": false,
+					"description": ""
+				},
+				"vhdl.formatter.align.procedure": {
+					"type": "boolean",
+					"default": false,
+					"description": ""
+				},
+				"vhdl.formatter.align.generic": {
+					"type": "boolean",
+					"default": false,
+					"description": ""
+				},
+				"vhdl.formatter.align.mode": {
+					"type": "string",
+					"default": "Global",
+					"enum": [
+						"Local",
+						"Global"
+					],
+					"description": ""
+				},
+				"vhdl.formatter.case.keyword": {
+					"type": "string",
+					"default": "UpperCase",
+					"enum": [
+						"UpperCase",
+						"LowerCase",
+						"DefaultCase"
+					],
+					"description": ""
+				},
+				"vhdl.formatter.case.typename": {
+					"type": "string",
+					"default": "UpperCase",
+					"enum": [
+						"UpperCase",
+						"LowerCase",
+						"DefaultCase"
+					],
+					"description": ""
+				},
+				"vhdl.formatter.newline.port": {
+					"type": "string",
+					"default": "None",
+					"enum": [
+						"NewLine",
+						"NoNewLine",
+						"None"
+					],
+					"description": ""
+				},
+				"vhdl.formatter.newline.then": {
+					"type": "string",
+					"default": "None",
+					"enum": [
+						"NewLine",
+						"NoNewLine",
+						"NewLine"
+					],
+					"description": ""
+				},
+				"vhdl.formatter.newline.semicolon": {
+					"type": "string",
+					"default": "None",
+					"enum": [
+						"NewLine",
+						"NoNewLine",
+						"NewLine"
+					],
+					"description": ""
+				},
+				"vhdl.formatter.newline.else": {
+					"type": "string",
+					"default": "None",
+					"enum": [
+						"NewLine",
+						"NoNewLine",
+						"None"
+					],
+					"description": ""
+				},
+				"vhdl.formatter.newline.generic": {
+					"type": "string",
+					"default": "None",
+					"enum": [
+						"NewLine",
+						"NoNewLine",
+						"None"
+					],
+					"description": ""
+				}
+			}
+		}
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install && tsc"
+	},
+	"devDependencies": {
+		"@types/node": "^6.14.0",
+		"typescript": "^3.1.3",
+		"vscode": "^1.1.26"
+	}
+}
