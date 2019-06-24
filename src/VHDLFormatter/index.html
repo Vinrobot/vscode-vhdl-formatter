@@ -1,0 +1,577 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>VHDL Beautifier, Formatter Online</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="highlight.css" rel="stylesheet" />
+    <script src="highlight.js"></script>
+    <script>
+        function selectText(element) {
+            var doc = document,
+                text = element,
+                range, selection;
+            if (doc.body.createTextRange) { //ms
+                range = doc.body.createTextRange();
+                range.moveToElementText(text);
+                range.select();
+            } else if (window.getSelection) { //all others
+                selection = window.getSelection();
+                range = doc.createRange();
+                range.selectNodeContents(text);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="content">
+<div class="top-bar">
+    <div class="container">
+    <h2>VHDL Beautifier, Formatter</h2>
+        <ul>
+            <li>
+                <div class="tooltip emoji top-button" onclick="showInfo();">&#x2139;
+                    <span class="tooltiptext">Beautify and format your VHDL code online</span>
+                </div>
+                <div id="info" class="modal">
+                    <div class="modal-content">
+                        <span id="close-info" class="close">&times;</span>
+                        <p>Beautify and format your VHDL code online</p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="tooltip emoji top-button" onclick="showWarning();">&#x26A0;
+                    <span class="tooltiptext">Please make a backup before you replace your code!</span>
+                </div>
+                <div id="warning" class="modal">
+                    <div class="modal-content">
+                        <span id="close-warning" class="close">&times;</span>
+                        <p>Please make a backup before you replace your code!</p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="tooltip emoji top-button" onclick="showHappy();">&#x1F638;
+                    <span class="tooltiptext">Proper formatting makes code easier to read and understand.</span>
+                </div>
+                <div id="happy" class="modal">
+                    <div class="modal-content">
+                        <span id="close-happy" class="close">&times;</span>
+                        <p>Proper formatting makes code easier to read and understand.</p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a class="top-button" href="https://github.com/g2384/VHDLFormatter/issues/new" target="_blank">Report
+                    <span class="inline-emoji">&#x1f41e;</span> bug</a>
+            </li>
+            <li>
+                <a class="top-button" href="https://github.com/g2384/VHDLFormatter">Source code</a>
+            </li>
+        </ul>
+</div>
+</div>
+    <textarea id="in" rows="10" wrap="off"></textarea>
+    <br>
+    <div class="setting-field">
+    <div class="checkbox">
+        <input type="checkbox" id="no_format" onclick="noFormat()">
+        <label for="no_format">Only highlight, don't format</label>
+    </div>
+    <form id="keyword_div">Keyword case:
+        <label>
+            <input type="radio" name="keywordcase" value="UpperCase" checked="checked">UPPERCASE</label> |
+        <label>
+            <input type="radio" name="keywordcase" value="LowerCase">lowercase</label> |
+        <label>
+            <input type="radio" name="keywordcase" value="DefaultCase">Default</label>
+        <div class="inline-note">
+            e.g. begin, case, when
+        </div>
+    </form>
+    <form id="typename_div">Type name case:
+        <label>
+            <input type="radio" name="typenamecase" value="UpperCase" checked="checked">UPPERCASE</label> |
+        <label>
+            <input type="radio" name="typenamecase" value="LowerCase">lowercase</label> |
+        <label>
+            <input type="radio" name="typenamecase" value="DefaultCase">Default</label>
+        <div class="inline-note">
+            e.g. boolean, natural, string
+        </div>
+    </form>
+    <div class="hide" id="settings_div">
+        <fieldset id="new_line_after_div">
+            <legend>New line after</legend>
+            <form id="new_line_after_then">
+                <span class="code">THEN</span>
+                <label>
+                    <input type="radio" name="new_line_after_thencase" value="NewLine" checked="checked">New Line</label>
+                <label>
+                    <input type="radio" name="new_line_after_thencase" value="NoNewLine">No New Line</label>
+                <label>
+                    <input type="radio" name="new_line_after_thencase" value="None">None</label>
+            </form>
+            <form id="new_line_after_semicolon">
+                <span class="code">semicolon ";"</span>
+                <label>
+                    <input type="radio" name="new_line_after_semicoloncase" value="NewLine" checked="checked">New Line</label>
+                <label>
+                    <input type="radio" name="new_line_after_semicoloncase" value="NoNewLine">No New Line</label>
+                <label>
+                    <input type="radio" name="new_line_after_semicoloncase" value="None">None</label>
+            </form>
+            <form id="new_line_after_else">
+                <span class="code">ELSE</span>
+                <label>
+                    <input type="radio" name="new_line_after_elsecase" value="NewLine">New Line</label>
+                <label>
+                    <input type="radio" name="new_line_after_elsecase" value="NoNewLine">No New Line</label>
+                <label>
+                    <input type="radio" name="new_line_after_elsecase" value="None" checked="checked">None</label>
+            </form>
+            <form id="new_line_after_port">
+                <span class="code">PORT | PORT MAP</span>
+                <label>
+                    <input type="radio" name="new_line_after_portcase" value="NewLine">New Line</label>
+                <label>
+                    <input type="radio" name="new_line_after_portcase" value="NoNewLine">No New Line</label>
+                <label>
+                    <input type="radio" name="new_line_after_portcase" value="None" checked="checked">None</label>
+            </form>
+            <form id="new_line_after_generic">
+                <span class="code">GENERIC</span>
+                <label>
+                    <input type="radio" name="new_line_after_genericcase" value="NewLine">New Line</label>
+                <label>
+                    <input type="radio" name="new_line_after_genericcase" value="NoNewLine">No New Line</label>
+                <label>
+                    <input type="radio" name="new_line_after_genericcase" value="None" checked="checked">None</label>
+            </form>
+        </fieldset>
+        <div class="checkbox inline" id="remove_comments_div">
+            <input type="checkbox" id="remove_comments">
+            <label for="remove_comments">Remove commments</label> |
+        </div>
+        <div class="checkbox inline" id="remove_lines_div">
+            <input type="checkbox" id="remove_lines">
+            <label for="remove_lines">Remove blank lines</label> |
+        </div>
+        <div class="checkbox inline" id="remove_report_div">
+            <input type="checkbox" id="remove_report">
+            <label for="remove_report">Remove REPORT</label>
+        </div>
+        <br>
+        <div class="checkbox" id="check_alias_div">
+            <input type="checkbox" id="check_alias">
+            <label for="check_alias">Check ALIAS (all long names will be replaced by ALIAS names)</label>
+        </div>
+        <div id="sign_align_in_div">
+            Align signs in
+            <div class="checkbox inline" id="sign_align_port_div">
+                <input type="checkbox" id="sign_align_port">
+                <label for="sign_align_port" class="code">PORT()</label>
+            </div>
+            <div class="checkbox inline" id="sign_align_generic_div">
+                <input type="checkbox" id="sign_align_generic">
+                <label for="sign_align_generic" class="code">GENERIC()</label></div>
+            <div class="checkbox inline" id="sign_align_procedure_div">
+                <input type="checkbox" id="sign_align_procedure">
+                <label for="sign_align_procedure" class="code">PROCEDURE()</label>
+            </div>
+            <div class="checkbox inline" id="sign_align_function_div">
+                <input type="checkbox" id="sign_align_function">
+                <label for="sign_align_function" class="code">FUNCTION()</label>
+            </div>
+        </div>
+        <div class="checkbox inline" id="sign_align_all_div">
+            <input type="checkbox" id="sign_align_all">
+            <label for="sign_align_all">Align signs in all places</label>
+        </div>
+        <form class="inline" id="sign_align_mode_div">
+            <span>Mode: </span>
+            <label>
+                <input type="radio" name="sign_align_modecase" value="local">Local</label>
+            <label>
+                <input type="radio" name="sign_align_modecase" value="global">Global</label>
+        </form>
+        <div id="customise_indentation_div">
+            <div class="checkbox inline" id="use_space_div">
+                <input type="checkbox" id="use_space">
+                <label for="use_space">Customise Indentation: </label>
+            </div>(tab is \t)
+            <input type="text" id="customise_indentation" size="8" onKeyUp="counterDecode('customise_indentation', 'indent_s')" value="    " /> (
+            <span id="indent_s">four blankspaces</span>)
+        </div>
+        <div id="cust_eol_div">
+            End of line:
+            <input type="text" id="cust_eol" size="8" onKeyUp="counterDecode('cust_eol', 'eol_s')" value="\r\n" /> (
+            <span id="eol_s">one \r & one \n</span>)
+        </div>
+        <div class="checkbox" id="compress_div">
+            <input type="checkbox" id="compress">
+            <label for="compress">! EVIL - compress VHDL (\r\n, comments will be removed)</label>
+        </div>
+        <div class="checkbox" id="mix_letter_div">
+            <input type="checkbox" id="mix_letter">
+            <label for="mix_letter">! EVIL - unreadable (mix upper/lower-case letters)</label>
+        </div>
+    </div>
+</div>
+    <div>
+        <a id="settings_control" onclick="showHideSettings();">Show More Settings ▼</a>
+        <a onclick="outputSetting()">Output Settings</a>
+    </div>
+    <input type="button" class="btn" onclick="f()" value="Start" />
+    <span class="show">
+        <input type="button" class="btn " id="selectAll" value="Select All" onclick="selectText(document.getElementById('vhdl'))" />
+        <div class="checkbox inline">
+            <input type="checkbox" onclick="wordWrap()" id="word_wrap">
+            <label for="word_wrap">Word wrap</label>
+        </div>
+    </span>
+    <br>
+    <pre id="result"><code class="vhdl" id="vhdl">
+<font style="background-color:#9D9D9D; color:#fff"> output sample </font>
+
+<span class="hljs-keyword">LIBRARY</span> IEEE; <span class="hljs-comment">-- declare the library</span>
+<span class="hljs-keyword">USE</span> IEEE.std_logic_1164.<span class="hljs-keyword">ALL</span>;
+<span class="hljs-keyword">USE</span> IEEE.std_logic_arith.<span class="hljs-keyword">ALL</span>;
+<font style="background-color:#9D9D9D; color:#fff"> (All reserved words are in capital) </font>
+<font style="background-color:#9D9D9D; color:#fff"> (All indents are in the right place) </font>
+<span class="hljs-comment">---------------------------------------------------------------</span>
+
+<span class="hljs-keyword">ENTITY</span> example <span class="hljs-keyword">IS</span>
+	<span class="hljs-keyword">PORT</span> (
+		rst                   : <span class="hljs-keyword">IN</span> <span class="hljs-typename">std_logic</span>;
+		clk                   : <span class="hljs-keyword">IN</span> <span class="hljs-typename">std_logic</span>;
+		example_of_long_words : <span class="hljs-keyword">OUT</span> <span class="hljs-typename">std_logic_vector</span>(<span class="hljs-number">3</span> <span class="hljs-keyword">DOWNTO</span> <span class="hljs-number">0</span>)
+		<font style="background-color:#9D9D9D; color:#fff"> (<strong>Align signs in PORT()</strong> aligns these colons) </font>
+	);
+<span class="hljs-keyword">END</span> example;
+
+<span class="hljs-keyword">ARCHITECTURE</span> EXA <span class="hljs-keyword">OF</span> example <span class="hljs-keyword">IS</span>
+	<span class="hljs-keyword">ALIAS</span> slv <span class="hljs-keyword">IS</span> <span class="hljs-typename">std_logic_vector</span>;
+	<span class="hljs-keyword">SUBTYPE</span> bit4 <span class="hljs-keyword">IS</span> slv(<span class="hljs-number">3</span> <span class="hljs-keyword">DOWNTO</span> <span class="hljs-number">0</span>); <font style="background-color:#9D9D9D; color:#fff"> (<strong>Check ALIAS</strong> replaces all "<strong>std_logic_vector</strong>" with "<strong>slv</strong>") </font>
+	 
+<span class="hljs-keyword">BEGIN</span>
+	<del><span class="hljs-keyword">REPORT</span> <span class="hljs-string">"Hello World"</span></del>; <font style="background-color:#9D9D9D; color:#fff"> (Remove REPORT) </font>
+	 
+	stages : <span class="hljs-keyword">PROCESS</span> (rst, clk)
+	<span class="hljs-keyword">BEGIN</span>
+		 
+		<span class="hljs-keyword">IF</span> (rst = <span class="hljs-literal">'0'</span>) <span class="hljs-keyword">THEN</span>
+			<span class="hljs-keyword">CASE</span> bit4 <span class="hljs-keyword">IS</span>
+				<span class="hljs-keyword">WHEN</span> <span class="hljs-string">"0000"</span> =&gt; bit4 &lt;= <span class="hljs-string">"0001"</span>;
+				<span class="hljs-keyword">WHEN</span> <span class="hljs-string">"0001"</span> =&gt; bit4 &lt;= <span class="hljs-string">"0100"</span>;
+				<span class="hljs-keyword">WHEN</span> <span class="hljs-string">"0010"</span> =&gt; bit4 &lt;= <span class="hljs-string">"0010"</span>;
+				<span class="hljs-keyword">WHEN</span> <span class="hljs-string">"0100"</span> =&gt; bit4 &lt;= <span class="hljs-string">"0000"</span>;
+				<span class="hljs-keyword">WHEN</span> <span class="hljs-keyword">OTHERS</span> =&gt; 
+					<del><span class="hljs-keyword">REPORT</span> <span class="hljs-string">"Are there any more cases?"</span></del>; <font style="background-color:#9D9D9D; color:#fff"> (Remove REPORT) </font>
+			<span class="hljs-keyword">END</span> <span class="hljs-keyword">CASE</span>;
+		<span class="hljs-keyword">ELSIF</span> (clk<span class="hljs-attribute">'event</span> <span class="hljs-keyword">AND</span> clk = <span class="hljs-literal">'1'</span>) <span class="hljs-keyword">THEN</span>
+			<span class="hljs-keyword">IF</span> (bit4 = '<span class="hljs-number">0111</span>') <span class="hljs-keyword">THEN</span>
+				bit4 &lt;= <span class="hljs-string">"0000"</span>;
+			<span class="hljs-keyword">ELSE</span>
+				bit4 &lt;= <span class="hljs-string">"1111"</span>;
+			<span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span>;
+			<del><span class="hljs-comment">-- Sample comments 1;</span> </del> 
+			<del> <span class="hljs-comment">-- Sample comments 2;</span></del>  <font style="background-color:#9D9D9D; color:#fff"> (Remove comments) </font>
+		<span class="hljs-keyword">END</span> <span class="hljs-keyword">IF</span>;
+		 
+	<span class="hljs-keyword">END</span> <span class="hljs-keyword">PROCESS</span>;
+<span class="hljs-keyword">END</span> EXA;</code></pre>
+
+</div>
+    <script>
+        var exports = {};
+    </script>
+    <script src="VHDLFormatter.js"></script>
+    <script src="descriptiveCounter.js"></script>
+    <script src="main.js"></script>
+    <script>
+        const localStorageSettingKey = "settings";
+        const localStorageNoFormatKey = "noFormat";
+
+        var areaIn = document.getElementById("in");
+        areaIn.placeholder = "library IEEE;\nuse IEEE.std_logic_1164.all;\nuse IEEE.std_logic_unsigned.all;\n...";
+
+        function showHideSettings() {
+            var settingsDiv = document.getElementById("settings_div");
+            var control = document.getElementById("settings_control");
+            if (settingsDiv.className.indexOf("hide") >= 0) {
+                settingsDiv.className = settingsDiv.className.replace(/\s*hide/, "");
+                control.innerHTML = "Show Less ▲";
+            }
+            else {
+                settingsDiv.className += "hide";
+                control.innerHTML = "Show More Settings ▼";
+            }
+        }
+
+        function onLoad() {
+            let global_endOfLine = navigator.platform === 'Win32' ? '\\r\\n' : '\\n';
+            document.getElementById("cust_eol").value = global_endOfLine;
+            var setting = loadSetting();
+            if (setting == null) {
+                return;
+            }
+
+            var beautifierSettings = setting.setting;
+            document.getElementById("remove_comments").checked = beautifierSettings.RemoveComments;
+            document.getElementById("remove_lines").checked = setting.removeLines;
+            document.getElementById("remove_report").checked = beautifierSettings.RemoveAsserts;
+            document.getElementById("check_alias").checked = beautifierSettings.CheckAlias;
+            var alignSettings = beautifierSettings.SignAlignSettings;
+            if (alignSettings != null) {
+                var signAlignKeywords = alignSettings.keyWords;
+                if (signAlignKeywords != null && signAlignKeywords.length > 0) {
+                    document.getElementById("sign_align_port").checked = signAlignKeywords.indexOf("PORT") >= 0;
+                    document.getElementById("sign_align_function").checked = signAlignKeywords.indexOf("FUNCTION") >= 0;
+                    document.getElementById("sign_align_procedure").checked = signAlignKeywords.indexOf("PROCEDURE") >= 0;
+                    document.getElementById("sign_align_generic").checked = signAlignKeywords.indexOf("GENERIC") >= 0;
+                }
+                document.getElementById("sign_align_all").checked = alignSettings.isAll;
+                document.getElementById("sign_align_mode_div").elements.namedItem("sign_align_modecase").value = alignSettings.mode;
+            }
+            var newLineSettings = beautifierSettings.NewLineSettings;
+            var newLineAfter = newLineSettings.newLineAfter;
+            var noNewLineAfter = newLineSettings.noNewLineAfter;
+            document.getElementById("new_line_after_port").elements.namedItem("new_line_after_portcase").value = decodeNewLineSetting(newLineAfter, noNewLineAfter, "port");
+            document.getElementById("new_line_after_then").elements.namedItem("new_line_after_thencase").value = decodeNewLineSetting(newLineAfter, noNewLineAfter, "then");
+            document.getElementById("new_line_after_semicolon").elements.namedItem("new_line_after_semicoloncase").value = decodeNewLineSetting(newLineAfter, noNewLineAfter, ";");
+            document.getElementById("new_line_after_else").elements.namedItem("new_line_after_elsecase").value = decodeNewLineSetting(newLineAfter, noNewLineAfter, "else");
+            document.getElementById("new_line_after_generic").elements.namedItem("new_line_after_genericcase").value = decodeNewLineSetting(newLineAfter, noNewLineAfter, "generic");
+            document.getElementById("compress").checked = setting.compress;
+            var indentation = beautifierSettings.Indentation;
+            document.getElementById("use_space").checked = indentation != "\t";
+            document.getElementById("customise_indentation").value = indentation;
+            document.getElementById("keyword_div").elements.namedItem("keywordcase").value = beautifierSettings.KeywordCase;
+            document.getElementById("typename_div").elements.namedItem("typenamecase").value = beautifierSettings.TypeNameCase;
+            document.getElementById("mix_letter").checked = setting.mixLetter;
+            var eof = beautifierSettings.EndOfLine
+            eof = eof.replace(/\r/g, "\\r");
+            eof = eof.replace(/\n/g, "\\n");
+            eof = eof.replace(/\t/g, "\\t");
+            document.getElementById("cust_eol").value = eof;
+            var noFormatBool = loadNoFormatSetting();
+            if (noFormatBool) {
+                document.getElementById("no_format").checked = true;
+                noFormat();
+            }
+            counterDecode('customise_indentation', 'indent_s');
+            counterDecode('cust_eol', 'eol_s');
+        }
+
+        function decodeNewLineSetting(hasNewLine, noNewLine, str) {
+            if (hasNewLine.indexOf(str) >= 0) {
+                return "NewLine";
+            }
+            if (noNewLine.indexOf(str) >= 0) {
+                return "NoNewLine";
+            }
+            return "None";
+        }
+
+        onLoad();
+        
+        function f() {
+            var input = document.getElementById("in").value;
+            var no_format = document.getElementById("no_format").checked;
+            saveNoFormatSetting(no_format);
+            if (no_format) {
+                document.getElementById("vhdl").innerHTML = input;
+                document.querySelector(".show").style.display = "inline-block";
+                hljs.highlightBlock(document.getElementById("vhdl"));
+                return;
+            }
+            
+            var remove_lines = document.getElementById("remove_lines").checked;
+            var mix_letter = document.getElementById("mix_letter").checked;
+            [beautifierSettings, compress] = CreateSettings();
+            vhdlSettings = new VhdlSettings(beautifierSettings, remove_lines, compress, mix_letter);
+            saveSetting(vhdlSettings);
+
+            input = beautify(input, beautifierSettings);
+
+            if (remove_lines) {
+                input = input.replace(/(\r\n)*[ \t]*\r\n/g, '\r\n');
+            }
+
+            if (compress) {
+                input = Compress(input);
+            }
+
+            if (mix_letter) {
+                input = MixLetters(input);
+            }
+
+            document.getElementById("vhdl").innerHTML = input;
+            document.querySelector(".show").style.display = "inline-block";
+            hljs.highlightBlock(document.getElementById("vhdl"));
+        }
+
+        function CreateSettings() {
+            var remove_comments = document.getElementById("remove_comments").checked;            
+            var remove_report = document.getElementById("remove_report").checked;
+            var check_alias = document.getElementById("check_alias").checked;
+            var sign_align_port = document.getElementById("sign_align_port").checked;
+            var sign_align_function = document.getElementById("sign_align_function").checked;
+            var sign_align_procedure = document.getElementById("sign_align_procedure").checked;
+            var sign_align_generic = document.getElementById("sign_align_generic").checked;
+            var sign_align_all = document.getElementById("sign_align_all").checked;
+            var sign_align_mode = document.getElementById("sign_align_mode_div").elements.namedItem("sign_align_modecase").value;
+            var new_line_after_port = document.getElementById("new_line_after_port").elements.namedItem("new_line_after_portcase").value;
+            var new_line_after_then = document.getElementById("new_line_after_then").elements.namedItem("new_line_after_thencase").value;
+            var new_line_after_semicolon = document.getElementById("new_line_after_semicolon").elements.namedItem("new_line_after_semicoloncase").value;
+            var new_line_after_else = document.getElementById("new_line_after_else").elements.namedItem("new_line_after_elsecase").value;
+            var new_line_after_generic = document.getElementById("new_line_after_generic").elements.namedItem("new_line_after_genericcase").value;
+            var use_space = document.getElementById("use_space").checked;
+            var compress = document.getElementById("compress").checked;
+            var cust_indent = document.getElementById("customise_indentation").value;
+            var keywordcase = document.getElementById("keyword_div").elements.namedItem("keywordcase").value;
+            var typenamecase = document.getElementById("typename_div").elements.namedItem("typenamecase").value;            
+            var endOfLine = document.getElementById("cust_eol").value;
+            endOfLine = endOfLine.replace(/\\r/g, "\r");
+            endOfLine = endOfLine.replace(/\\n/g, "\n");
+            if (compress) {
+                remove_comments = true;
+            }
+
+            indentation = "\t";
+            if (use_space) {
+                cust_indent = cust_indent.replace(/\\t/, "	");
+                indentation = cust_indent;
+            }
+
+            var newLineSettingsDict = {};
+            newLineSettingsDict["generic"] = new_line_after_generic;
+            newLineSettingsDict["generic map"] = new_line_after_generic;
+            newLineSettingsDict["port"] = new_line_after_port;
+            newLineSettingsDict["port map"] = new_line_after_port;
+            newLineSettingsDict[";"] = new_line_after_semicolon;
+            newLineSettingsDict["then"] = new_line_after_then;
+            newLineSettingsDict["else"] = new_line_after_else;
+            newLineSettings = ConstructNewLineSettings(newLineSettingsDict);
+            var signAlignKeywords = [];
+            if (sign_align_function) {
+                signAlignKeywords.push("FUNCTION");
+                signAlignKeywords.push("IMPURE FUNCTION");
+            }
+            if (sign_align_generic) {
+                signAlignKeywords.push("GENERIC");
+            }
+            if (sign_align_port) {
+                signAlignKeywords.push("PORT");
+            }
+            if (sign_align_procedure) {
+                signAlignKeywords.push("PROCEDURE");
+            }
+            sign_align = signAlignKeywords.length > 0;
+            let alignSettings = new signAlignSettings(sign_align, sign_align_all, sign_align_mode, signAlignKeywords)
+
+            beautifierSettings = new BeautifierSettings(remove_comments, remove_report, check_alias,
+                alignSettings,
+                keywordcase,
+                typenamecase,
+                indentation,
+                newLineSettings,
+                endOfLine);
+
+            return [beautifierSettings, compress];
+        }
+
+        function outputSetting() {
+            [beautifierSettings, compress] = CreateSettings();
+            var json = JSON.stringify(beautifierSettings, null, 4);
+            document.getElementById("vhdl").innerHTML = json;
+        }
+
+        function saveSetting(setting) {
+            var json = JSON.stringify(setting);
+            json = json.replace(/\r/g, "\\r");
+            json = json.replace(/\n/g, "\\n");
+            json = json.replace(/\t/g, "\\t");
+            localStorage.setItem(localStorageSettingKey, json);
+        }
+        
+        function loadSetting() {
+            var json = localStorage.getItem(localStorageSettingKey);
+            if (json == null) {
+                return null;
+            }
+            return JSON.parse(json);
+        }
+
+        function saveNoFormatSetting(no_format) {
+            localStorage.setItem(localStorageNoFormatKey, no_format);
+        }
+        
+        function loadNoFormatSetting() {
+            return JSON.parse(localStorage.getItem(localStorageNoFormatKey));
+        }
+
+        class VhdlSettings {
+            constructor(setting, removeLines, compress, mixLetter) {
+                this.setting = setting;
+                this.removeLines = removeLines;
+                this.compress = compress;
+                this.mixLetter = mixLetter;
+            }
+        }
+
+        var warning = document.getElementById('warning');
+        var info = document.getElementById('info');
+        var happy = document.getElementById('happy');
+
+        var closeInfo = document.getElementById("close-info");
+        var closeWarning = document.getElementById("close-warning");
+        var closeHappy = document.getElementById("close-happy");
+
+        function showWarning() {
+            warning.style.display = "block";
+        }
+
+        function showInfo() {
+            info.style.display = "block";
+        }
+
+        function showHappy() {
+            happy.style.display = "block";
+        }
+
+        closeInfo.onclick = function() {
+            hidePopups();
+        }
+
+        closeWarning.onclick = function() {
+            hidePopups();
+        }
+
+        closeHappy.onclick = function(){
+            hidePopups();
+        }
+
+        function hidePopups() {
+            warning.style.display = "none";
+            info.style.display = "none";
+            happy.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            var target = event.target;
+            if (target == warning
+            || target == info
+            || target == happy) {
+                hidePopups();
+            }
+        }
+    </script>
+</body>
+
+</html>
