@@ -7,8 +7,6 @@ export const CONFIGURATION_KEY = "vhdl.formatter";
 export const CONFIGURATION_REMOVE_COMMENTS = "removeComments"; // Boolean
 export const CONFIGURATION_REMOVE_REPORTS = "removeReports"; // Boolean
 export const CONFIGURATION_CHECK_ALIAS = "replaceByAliases"; // Boolean
-export const CONFIGURATION_USE_TABS = "useTabs"; // Boolean
-export const CONFIGURATION_CUSTOM_INDENT = "customIndentation"; // String
 export const CONFIGURATION_ALIGN_ALL_SIGN = "align.all"; // Boolean
 export const CONFIGURATION_ALIGN_PORT_SIGN = "align.port"; // Boolean
 export const CONFIGURATION_ALIGN_FUNCTION_SIGN = "align.function"; // Boolean
@@ -41,8 +39,7 @@ enum NewLineConfig {
 }
 
 export function getSettings<T>(section: string, key: string, defaultValue?: T): T {
-	let editor = vscode.window.activeTextEditor;
-	return vscode.workspace.getConfiguration(section).get<T>(key, defaultValue as T);
+	return vscode.workspace.getConfiguration(section, null).get<T>(key, defaultValue as T);
 }
 
 export function getExtSettings<T>(key: string, defaultValue?: T): T {
@@ -50,26 +47,24 @@ export function getExtSettings<T>(key: string, defaultValue?: T): T {
 }
 
 export function getConfig() {
-	const endOfLine = "\n";//getSettings<string>("files", "eol", "\n");
+	const indentation = getSettings<boolean>("editor", "insertSpaces", false) ? "    " : "\t";
+	const endOfLine = getSettings<string>("files", "eol", "\n");
 
 	const removeComments = getExtSettings<boolean>(CONFIGURATION_REMOVE_COMMENTS, false);
 	const removeReports = getExtSettings<boolean>(CONFIGURATION_REMOVE_REPORTS, false);
 	const checkAlias = getExtSettings<boolean>(CONFIGURATION_CHECK_ALIAS, false);
-	const useTabs = getExtSettings<boolean>(CONFIGURATION_USE_TABS, true);
 
 	const newLineAfterPort = getExtSettings<NewLineConfig>(CONFIGURATION_NEWLINE_AFTER_PORT, NewLineConfig.None);
 	const newLineAfterThen = getExtSettings<NewLineConfig>(CONFIGURATION_NEWLINE_AFTER_THEN, NewLineConfig.NewLine);
 	const newLineAfterSemicolon = getExtSettings<NewLineConfig>(CONFIGURATION_NEWLINE_AFTER_SEMICOLON, NewLineConfig.NewLine);
-	const newLineAfterElse = getExtSettings<NewLineConfig>(CONFIGURATION_NEWLINE_AFTER_ELSE, NewLineConfig.None);
+	const newLineAfterElse = getExtSettings<NewLineConfig>(CONFIGURATION_NEWLINE_AFTER_ELSE, NewLineConfig.NewLine);
 	const newLineAfterGeneric = getExtSettings<NewLineConfig>(CONFIGURATION_NEWLINE_AFTER_GENERIC, NewLineConfig.None);
 
-	const indentation = useTabs ? "\t" : getExtSettings<string>(CONFIGURATION_CUSTOM_INDENT, "\t");
-
 	const alignAllSign = getExtSettings<boolean>(CONFIGURATION_ALIGN_ALL_SIGN, false);
-	const alignPortSign = getExtSettings<boolean>(CONFIGURATION_ALIGN_PORT_SIGN, true);
-	const alignFunctionSign = getExtSettings<boolean>(CONFIGURATION_ALIGN_FUNCTION_SIGN, true);
-	const alignProcedureSign = getExtSettings<boolean>(CONFIGURATION_ALIGN_PROCEDURE_SIGN, true);
-	const alignGenericSign = getExtSettings<boolean>(CONFIGURATION_ALIGN_GENERIC_SIGN, true);
+	const alignPortSign = getExtSettings<boolean>(CONFIGURATION_ALIGN_PORT_SIGN, false);
+	const alignFunctionSign = getExtSettings<boolean>(CONFIGURATION_ALIGN_FUNCTION_SIGN, false);
+	const alignProcedureSign = getExtSettings<boolean>(CONFIGURATION_ALIGN_PROCEDURE_SIGN, false);
+	const alignGenericSign = getExtSettings<boolean>(CONFIGURATION_ALIGN_GENERIC_SIGN, false);
 	const signAlignMode = getExtSettings<AlignMode>(CONFIGURATION_ALIGN_SIGN_MODE, AlignMode.Local).toString().toLowerCase();
 
 	const keywordCase = getExtSettings<CaseType>(CONFIGURATION_CASE_KEYWORD, CaseType.UpperCase).toString().toLowerCase();
