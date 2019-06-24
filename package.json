@@ -1,5 +1,5 @@
 {
-	"name": "net.vinrobot.vhdl.formatter",
+	"name": "vhdl-formatter",
 	"displayName": "VHDL Formatter",
 	"description": "",
 	"version": "0.0.1",
@@ -10,6 +10,10 @@
 	"categories": [
 		"Other"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Vinrobot/vscode-vhdl-formatter.git"
+	},
 	"activationEvents": [
 		"onLanguage:vhdl"
 	],
@@ -33,7 +37,7 @@
 		],
 		"configuration": {
 			"type": "object",
-			"title": "VHDL Formatter configuration",
+			"title": "VHDL Formatter",
 			"properties": {
 				"vhdl.formatter.replaceByAliases": {
 					"type": "boolean",
