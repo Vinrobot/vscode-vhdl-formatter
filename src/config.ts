@@ -46,9 +46,15 @@ export function getExtSettings<T>(key: string, defaultValue?: T): T {
 	return getSettings<T>(CONFIGURATION_KEY, key, defaultValue);
 }
 
+function getEndOfLine() {
+	var endOfLine = getSettings<string>("files", "eol", "\n");
+	var isValid = endOfLine == "\r\n" || endOfLine == "\n";
+	return isValid ? endOfLine : "\n";
+}
+
 export function getConfig() {
 	const indentation = getSettings<boolean>("editor", "insertSpaces", false) ? "    " : "\t";
-	const endOfLine = getSettings<string>("files", "eol", "\n");
+	const endOfLine = getEndOfLine();
 
 	const removeComments = getExtSettings<boolean>(CONFIGURATION_REMOVE_COMMENTS, false);
 	const removeReports = getExtSettings<boolean>(CONFIGURATION_REMOVE_REPORTS, false);
