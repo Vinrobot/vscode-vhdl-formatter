@@ -2,7 +2,7 @@
 	"name": "vhdl-formatter",
 	"displayName": "VHDL Formatter",
 	"description": "",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"publisher": "Vinrobot",
 	"engines": {
 		"vscode": "^1.25.0"
