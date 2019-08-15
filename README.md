@@ -45,3 +45,7 @@ If you don't like the defaults shortcuts, you can rebind `editor.action.formatDo
 | `vhdl.formatter.newline.semicolon` | `NewLine`   | `NewLine/NoNewLine/None` |
 | `vhdl.formatter.newline.else`      | `NewLine`   | `NewLine/NoNewLine/None` |
 | `vhdl.formatter.newline.generic`   | `None`      | `NewLine/NoNewLine/None` |
+
+## Credits
+
+VHDL Formatter by g2384 - https://github.com/g2384/VHDLFormatter
