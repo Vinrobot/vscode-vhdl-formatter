@@ -52,8 +52,16 @@ function getEndOfLine() {
 	return isValid ? endOfLine : "\n";
 }
 
+function getIndentation() {
+	var insertSpaces = getSettings<boolean>("editor", "insertSpaces", false);
+	if (!insertSpaces) return "\t";
+	var tabSize = getSettings<number>("editor", "tabSize", 4);
+	if (typeof tabSize !== "number" || tabSize < 1) tabSize = 4;
+	return " ".repeat(tabSize);
+}
+
 export function getConfig() {
-	const indentation = getSettings<boolean>("editor", "insertSpaces", false) ? "    " : "\t";
+	const indentation = getIndentation();
 	const endOfLine = getEndOfLine();
 
 	const removeComments = getExtSettings<boolean>(CONFIGURATION_REMOVE_COMMENTS, false);
