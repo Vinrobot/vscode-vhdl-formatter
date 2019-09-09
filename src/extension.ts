@@ -13,11 +13,11 @@ function getDocumentRange(document: vscode.TextDocument) {
 
 export function activate(context: vscode.ExtensionContext) {
 	vscode.languages.registerDocumentFormattingEditProvider('vhdl', {
-		provideDocumentFormattingEdits(document: vscode.TextDocument): vscode.TextEdit[] {
+		provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions): vscode.TextEdit[] {
 			var range = getDocumentRange(document);
 			var content = document.getText(range);
 			var result: vscode.TextEdit[] = [];
-			var beautifierSettings = config.getConfig();
+			var beautifierSettings = config.getConfig(options);
 			var formatted = VHDLFormatter.beautify(content, beautifierSettings);
 			if (formatted) {
 				result.push(new vscode.TextEdit(range, formatted));

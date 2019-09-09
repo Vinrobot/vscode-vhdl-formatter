@@ -52,16 +52,17 @@ function getEndOfLine() {
 	return isValid ? endOfLine : "\n";
 }
 
-function getIndentation() {
-	var insertSpaces = getSettings<boolean>("editor", "insertSpaces", false);
-	if (!insertSpaces) return "\t";
-	var tabSize = getSettings<number>("editor", "tabSize", 4);
-	if (typeof tabSize !== "number" || tabSize < 1) tabSize = 4;
+function getIndentation(options) {
+	if (!options.insertSpaces) return "\t";
+	var tabSize = options.tabSize;
+	if (tabSize < 1) tabSize = 4;
 	return " ".repeat(tabSize);
 }
 
-export function getConfig() {
-	const indentation = getIndentation();
+export function getConfig(options: vscode.FormattingOptions): VHDLFormatter.BeautifierSettings {
+	if (!options) options = { insertSpaces: false, tabSize: 4 };
+
+	const indentation = getIndentation(options);
 	const endOfLine = getEndOfLine();
 
 	const removeComments = getExtSettings<boolean>(CONFIGURATION_REMOVE_COMMENTS, false);
