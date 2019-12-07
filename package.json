@@ -152,7 +152,8 @@
 		}
 	},
 	"scripts": {
-		"postinstall": "node ./node_modules/vscode/bin/install && tsc"
+		"postinstall": "node ./node_modules/vscode/bin/install && tsc",
+		"compile": "tsc"
 	},
 	"devDependencies": {
 		"@types/node": "^8.10.43",
