@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import * as VHDLFormatter from './VHDLFormatter/VHDLFormatter';
 
 export const CONFIGURATION_KEY = "vhdl.formatter";
+export const CONFIGURATION_INSERT_FINAL_NEW_LINE = "insertFinalNewline"; // Boolean
 export const CONFIGURATION_REMOVE_COMMENTS = "removeComments"; // Boolean
 export const CONFIGURATION_REMOVE_REPORTS = "removeReports"; // Boolean
 export const CONFIGURATION_CHECK_ALIAS = "replaceByAliases"; // Boolean
@@ -68,6 +69,7 @@ export function getConfig(options: vscode.FormattingOptions): VHDLFormatter.Beau
 	const removeComments = getExtSettings<boolean>(CONFIGURATION_REMOVE_COMMENTS, false);
 	const removeReports = getExtSettings<boolean>(CONFIGURATION_REMOVE_REPORTS, false);
 	const checkAlias = getExtSettings<boolean>(CONFIGURATION_CHECK_ALIAS, false);
+	const addNewLine = getExtSettings<boolean>(CONFIGURATION_INSERT_FINAL_NEW_LINE, false);
 
 	const newLineAfterPort = getExtSettings<NewLineConfig>(CONFIGURATION_NEWLINE_AFTER_PORT, NewLineConfig.None);
 	const newLineAfterThen = getExtSettings<NewLineConfig>(CONFIGURATION_NEWLINE_AFTER_THEN, NewLineConfig.NewLine);
@@ -104,5 +106,5 @@ export function getConfig(options: vscode.FormattingOptions): VHDLFormatter.Beau
 	}
 
 	const alignSettings = new VHDLFormatter.signAlignSettings(signAlignKeywords.length > 0, alignAllSign, signAlignMode, signAlignKeywords)
-	return new VHDLFormatter.BeautifierSettings(removeComments, removeReports, checkAlias, alignSettings, keywordCase, typenameCase, indentation, newLineSettings, endOfLine);
+	return new VHDLFormatter.BeautifierSettings(removeComments, removeReports, checkAlias, alignSettings, keywordCase, typenameCase, indentation, newLineSettings, endOfLine, addNewLine);
 }

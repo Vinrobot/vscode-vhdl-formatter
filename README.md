@@ -26,25 +26,26 @@ If you don't like the defaults shortcuts, you can rebind `editor.action.formatDo
 
 ## Configuration
 
-| Key                                | Default     | Values                   |
-|------------------------------------|-------------|--------------------------|
-| `vhdl.formatter.replaceByAliases`  | `false`     | `true/false`             |
-|                                    |             |                          |
-| `vhdl.formatter.align.mode`        | `Local`     | `Local/Global`           |
-| `vhdl.formatter.align.all`         | `false`     | `true/false`             |
-| `vhdl.formatter.align.port`        | `false`     | `true/false`             |
-| `vhdl.formatter.align.function`    | `false`     | `true/false`             |
-| `vhdl.formatter.align.procedure`   | `false`     | `true/false`             |
-| `vhdl.formatter.align.generic`     | `false`     | `true/false`             |
-|                                    |             |                          |
-| `vhdl.formatter.case.keyword`      | `UpperCase` | `UpperCase/LowerCase`    |
-| `vhdl.formatter.case.typename`     | `UpperCase` | `UpperCase/LowerCase`    |
-|                                    |             |                          |
-| `vhdl.formatter.newline.port`      | `None`      | `NewLine/NoNewLine/None` |
-| `vhdl.formatter.newline.then`      | `NewLine`   | `NewLine/NoNewLine/None` |
-| `vhdl.formatter.newline.semicolon` | `NewLine`   | `NewLine/NoNewLine/None` |
-| `vhdl.formatter.newline.else`      | `NewLine`   | `NewLine/NoNewLine/None` |
-| `vhdl.formatter.newline.generic`   | `None`      | `NewLine/NoNewLine/None` |
+| Key                                  | Default     | Values                   |
+|--------------------------------------|-------------|--------------------------|
+| `vhdl.formatter.insertFinalNewline`  | `false`     | `true/false`             |
+| `vhdl.formatter.replaceByAliases`    | `false`     | `true/false`             |
+|                                      |             |                          |
+| `vhdl.formatter.align.mode`          | `Local`     | `Local/Global`           |
+| `vhdl.formatter.align.all`           | `false`     | `true/false`             |
+| `vhdl.formatter.align.port`          | `false`     | `true/false`             |
+| `vhdl.formatter.align.function`      | `false`     | `true/false`             |
+| `vhdl.formatter.align.procedure`     | `false`     | `true/false`             |
+| `vhdl.formatter.align.generic`       | `false`     | `true/false`             |
+|                                      |             |                          |
+| `vhdl.formatter.case.keyword`        | `UpperCase` | `UpperCase/LowerCase`    |
+| `vhdl.formatter.case.typename`       | `UpperCase` | `UpperCase/LowerCase`    |
+|                                      |             |                          |
+| `vhdl.formatter.newline.port`        | `None`      | `NewLine/NoNewLine/None` |
+| `vhdl.formatter.newline.then`        | `NewLine`   | `NewLine/NoNewLine/None` |
+| `vhdl.formatter.newline.semicolon`   | `NewLine`   | `NewLine/NoNewLine/None` |
+| `vhdl.formatter.newline.else`        | `NewLine`   | `NewLine/NoNewLine/None` |
+| `vhdl.formatter.newline.generic`     | `None`      | `NewLine/NoNewLine/None` |
 
 ## Credits
 
