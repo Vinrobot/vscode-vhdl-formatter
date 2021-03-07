@@ -119,7 +119,7 @@
 					"enum": [
 						"NewLine",
 						"NoNewLine",
-						"NewLine"
+						"None"
 					],
 					"description": ""
 				},
@@ -129,7 +129,7 @@
 					"enum": [
 						"NewLine",
 						"NoNewLine",
-						"NewLine"
+						"None"
 					],
 					"description": ""
 				},
